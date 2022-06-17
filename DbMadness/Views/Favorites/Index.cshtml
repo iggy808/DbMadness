@@ -24,7 +24,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.NumberNavigation)
             </th>
-            <th></th>
+            <th>Buttons :D</th>
         </tr>
     </thead>
     <tbody>
@@ -34,13 +34,13 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AnimalNavigation.Id)
+                @Html.DisplayFor(modelItem => item.AnimalNavigation.Value)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ColorNavigation.Id)
+                @Html.DisplayFor(modelItem => item.ColorNavigation.Value)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NumberNavigation.Id)
+                @Html.DisplayFor(modelItem => item.NumberNavigation.Value)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

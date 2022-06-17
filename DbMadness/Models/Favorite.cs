@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DbMadness.Models
 {
@@ -11,8 +12,11 @@ namespace DbMadness.Models
         public int? Color { get; set; }
         public int? Number { get; set; }
 
+        [DisplayName("Favorite Animal")]
         public virtual FavoriteAnimal? AnimalNavigation { get; set; }
+        [DisplayName("Favorite Color")]
         public virtual FavoriteColor? ColorNavigation { get; set; }
+        [DisplayName("Favorite Number")]
         public virtual FavoriteNumber? NumberNavigation { get; set; }
     }
 }

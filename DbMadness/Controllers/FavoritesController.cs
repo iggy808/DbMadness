@@ -49,9 +49,9 @@ namespace DbMadness.Controllers
         // GET: Favorites/Create
         public IActionResult Create()
         {
-            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Id");
-            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Id");
-            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Id");
+            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value");
+            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value");
+            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value");
             return View();
         }
 
@@ -68,9 +68,9 @@ namespace DbMadness.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Id", favorite.Animal);
-            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Id", favorite.Color);
-            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Id", favorite.Number);
+            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
+            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
+            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
             return View(favorite);
         }
 
@@ -87,9 +87,10 @@ namespace DbMadness.Controllers
             {
                 return NotFound();
             }
-            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Id", favorite.Animal);
-            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Id", favorite.Color);
-            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Id", favorite.Number);
+            
+            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
+            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
+            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
             return View(favorite);
         }
 
@@ -125,9 +126,9 @@ namespace DbMadness.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Id", favorite.Animal);
-            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Id", favorite.Color);
-            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Id", favorite.Number);
+            ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
+            ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
+            ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
             return View(favorite);
         }
 
