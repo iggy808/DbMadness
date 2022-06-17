@@ -49,6 +49,9 @@ namespace DbMadness.Models
 
             modelBuilder.Entity<Favorite>(entity =>
             {
+                entity.HasIndex(e => e.Goblin, "UQ__Favorite__50D22630B5BF797E")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Name)
@@ -58,24 +61,29 @@ namespace DbMadness.Models
                 entity.HasOne(d => d.AnimalNavigation)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.Animal)
-                    .HasConstraintName("FK__Favorites__Anima__45F365D3");
+                    .HasConstraintName("FK__Favorites__Anima__5441852A");
 
                 entity.HasOne(d => d.ColorNavigation)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.Color)
-                    .HasConstraintName("FK__Favorites__Color__46E78A0C");
+                    .HasConstraintName("FK__Favorites__Color__5535A963");
+
+                entity.HasOne(d => d.GoblinNavigation)
+                    .WithOne(p => p.Favorite)
+                    .HasForeignKey<Favorite>(d => d.Goblin)
+                    .HasConstraintName("FK__Favorites__Gobli__571DF1D5");
 
                 entity.HasOne(d => d.NumberNavigation)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.Number)
-                    .HasConstraintName("FK__Favorites__Numbe__47DBAE45");
+                    .HasConstraintName("FK__Favorites__Numbe__5629CD9C");
             });
 
             modelBuilder.Entity<FavoriteAnimal>(entity =>
             {
                 entity.ToTable("Favorite_Animals");
 
-                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC2353AA827")
+                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC23E9464CF")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -89,7 +97,7 @@ namespace DbMadness.Models
             {
                 entity.ToTable("Favorite_Colors");
 
-                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC25255954E")
+                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC2B145BF78")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -103,7 +111,7 @@ namespace DbMadness.Models
             {
                 entity.ToTable("Favorite_Numbers");
 
-                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC27A6170C6")
+                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC2B0DF47EB")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");

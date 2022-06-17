@@ -22,9 +22,12 @@
                 @Html.DisplayNameFor(model => model.ColorNavigation)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.GoblinNavigation)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.NumberNavigation)
             </th>
-            <th>Buttons :D</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +41,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ColorNavigation.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoblinNavigation.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberNavigation.Value)

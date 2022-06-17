@@ -21,7 +21,7 @@ namespace DbMadness.Controllers
         // GET: Favorites
         public async Task<IActionResult> Index()
         {
-            var spellBookContext = _context.Favorites.Include(f => f.AnimalNavigation).Include(f => f.ColorNavigation).Include(f => f.NumberNavigation);
+            var spellBookContext = _context.Favorites.Include(f => f.AnimalNavigation).Include(f => f.ColorNavigation).Include(f => f.GoblinNavigation).Include(f => f.NumberNavigation);
             return View(await spellBookContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace DbMadness.Controllers
             var favorite = await _context.Favorites
                 .Include(f => f.AnimalNavigation)
                 .Include(f => f.ColorNavigation)
+                .Include(f => f.GoblinNavigation)
                 .Include(f => f.NumberNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (favorite == null)
@@ -51,6 +52,7 @@ namespace DbMadness.Controllers
         {
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value");
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value");
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "FirstName");
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value");
             return View();
         }
@@ -60,7 +62,7 @@ namespace DbMadness.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Animal,Color,Number")] Favorite favorite)
+        public async Task<IActionResult> Create([Bind("Id,Name,Animal,Color,Number,Goblin")] Favorite favorite)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +72,7 @@ namespace DbMadness.Controllers
             }
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "GoblinId", favorite.Goblin);
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
             return View(favorite);
         }
@@ -87,9 +90,9 @@ namespace DbMadness.Controllers
             {
                 return NotFound();
             }
-            
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "GoblinId", favorite.Goblin);
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
             return View(favorite);
         }
@@ -99,7 +102,7 @@ namespace DbMadness.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Animal,Color,Number")] Favorite favorite)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Animal,Color,Number,Goblin")] Favorite favorite)
         {
             if (id != favorite.Id)
             {
@@ -128,6 +131,7 @@ namespace DbMadness.Controllers
             }
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "GoblinId", favorite.Goblin);
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
             return View(favorite);
         }
@@ -143,6 +147,7 @@ namespace DbMadness.Controllers
             var favorite = await _context.Favorites
                 .Include(f => f.AnimalNavigation)
                 .Include(f => f.ColorNavigation)
+                .Include(f => f.GoblinNavigation)
                 .Include(f => f.NumberNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (favorite == null)
