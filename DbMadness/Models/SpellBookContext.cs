@@ -17,13 +17,17 @@ namespace DbMadness.Models
         }
 
         public virtual DbSet<Creature> Creatures { get; set; } = null!;
+        public virtual DbSet<Favorite> Favorites { get; set; } = null!;
+        public virtual DbSet<FavoriteAnimal> FavoriteAnimals { get; set; } = null!;
+        public virtual DbSet<FavoriteColor> FavoriteColors { get; set; } = null!;
+        public virtual DbSet<FavoriteNumber> FavoriteNumbers { get; set; } = null!;
         public virtual DbSet<RegisteredGoblin> RegisteredGoblins { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=DESKTOP-5H65PMP\\SQLEXPRESS01;Database=SpellBook;Trusted_Connection=True;");
             }
         }
@@ -41,6 +45,68 @@ namespace DbMadness.Models
                 entity.Property(e => e.TypeName)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Favorite>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.AnimalNavigation)
+                    .WithMany(p => p.Favorites)
+                    .HasForeignKey(d => d.Animal)
+                    .HasConstraintName("FK__Favorites__Anima__45F365D3");
+
+                entity.HasOne(d => d.ColorNavigation)
+                    .WithMany(p => p.Favorites)
+                    .HasForeignKey(d => d.Color)
+                    .HasConstraintName("FK__Favorites__Color__46E78A0C");
+
+                entity.HasOne(d => d.NumberNavigation)
+                    .WithMany(p => p.Favorites)
+                    .HasForeignKey(d => d.Number)
+                    .HasConstraintName("FK__Favorites__Numbe__47DBAE45");
+            });
+
+            modelBuilder.Entity<FavoriteAnimal>(entity =>
+            {
+                entity.ToTable("Favorite_Animals");
+
+                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC2353AA827")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Value)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FavoriteColor>(entity =>
+            {
+                entity.ToTable("Favorite_Colors");
+
+                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC25255954E")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Value)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FavoriteNumber>(entity =>
+            {
+                entity.ToTable("Favorite_Numbers");
+
+                entity.HasIndex(e => e.Value, "UQ__Favorite__07D9BBC27A6170C6")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("ID");
             });
 
             modelBuilder.Entity<RegisteredGoblin>(entity =>
