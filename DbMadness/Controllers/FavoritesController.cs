@@ -12,16 +12,28 @@ namespace DbMadness.Controllers
     public class FavoritesController : Controller
     {
         private readonly SpellBookContext _context;
+        public List<int> UnavailableGoblins = new List<int>();
 
         public FavoritesController(SpellBookContext context)
         {
             _context = context;
         }
 
+        public void UpdateGoblins(int? currentGoblin)
+        {
+            UnavailableGoblins.Clear();
+            foreach (var user in _context.Favorites)
+            {
+                if (user.Goblin != currentGoblin && user.Goblin != 1)
+                    UnavailableGoblins.Add(user.Goblin.Value);
+            }
+        }
+
         // GET: Favorites
         public async Task<IActionResult> Index()
         {
             var spellBookContext = _context.Favorites.Include(f => f.AnimalNavigation).Include(f => f.ColorNavigation).Include(f => f.GoblinNavigation).Include(f => f.NumberNavigation);
+            UpdateGoblins(-1);
             return View(await spellBookContext.ToListAsync());
         }
 
@@ -50,10 +62,12 @@ namespace DbMadness.Controllers
         // GET: Favorites/Create
         public IActionResult Create()
         {
+            UpdateGoblins(-1);
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value");
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value");
-            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "FirstName");
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins.Where(x => !UnavailableGoblins.Contains(x.GoblinId)), "GoblinId", "FirstName");
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value");
+
             return View();
         }
 
@@ -70,10 +84,12 @@ namespace DbMadness.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            UpdateGoblins(-1);
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
-            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "GoblinId", favorite.Goblin);
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins.Where(x => !UnavailableGoblins.Contains(x.GoblinId)), "GoblinId", "FirstName", favorite.Goblin);
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
+
             return View(favorite);
         }
 
@@ -90,10 +106,12 @@ namespace DbMadness.Controllers
             {
                 return NotFound();
             }
+            UpdateGoblins(favorite.Goblin);
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
-            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "GoblinId", favorite.Goblin);
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins.Where(x => !UnavailableGoblins.Contains(x.GoblinId)), "GoblinId", "FirstName", favorite.Goblin);
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
+
             return View(favorite);
         }
 
@@ -129,10 +147,12 @@ namespace DbMadness.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            UpdateGoblins(favorite.Goblin);
             ViewData["Animal"] = new SelectList(_context.FavoriteAnimals, "Id", "Value", favorite.Animal);
             ViewData["Color"] = new SelectList(_context.FavoriteColors, "Id", "Value", favorite.Color);
-            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins, "GoblinId", "GoblinId", favorite.Goblin);
+            ViewData["Goblin"] = new SelectList(_context.RegisteredGoblins.Where(x => !UnavailableGoblins.Contains(x.GoblinId)), "GoblinId", "FirstName", favorite.Goblin);
             ViewData["Number"] = new SelectList(_context.FavoriteNumbers, "Id", "Value", favorite.Number);
+
             return View(favorite);
         }
 

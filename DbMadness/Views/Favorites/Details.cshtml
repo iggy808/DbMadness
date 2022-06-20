@@ -20,25 +20,34 @@
             @Html.DisplayNameFor(model => model.AnimalNavigation)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnimalNavigation.Id)
+            @Html.DisplayFor(model => model.AnimalNavigation.Value)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ColorNavigation)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ColorNavigation.Id)
+            @Html.DisplayFor(model => model.ColorNavigation.Value)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.GoblinNavigation)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GoblinNavigation.GoblinId)
+            @if (Model.Goblin != 1)
+            {
+                @Html.DisplayFor(model => model.GoblinNavigation.FirstName)<a></a>
+                @Html.DisplayFor(model => model.GoblinNavigation.LastName)
+                <a>&emsp;</a><a asp-controller="RegisteredGoblins" asp-action="Details" asp-route-id="@Model?.Goblin">Goblin Details</a> 
+            }   
+            else
+            {
+                <a>Not Assigned</a>
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NumberNavigation)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberNavigation.Id)
+            @Html.DisplayFor(model => model.NumberNavigation.Value)
         </dd>
     </dl>
 </div>

@@ -9,8 +9,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-hover">
+    <thead class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -43,7 +43,11 @@
                 @Html.DisplayFor(modelItem => item.ColorNavigation.Value)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GoblinNavigation.FirstName)
+                @if (item.Goblin != 1)
+                {
+                    @Html.DisplayFor(modelItem => item.GoblinNavigation.FirstName)
+                    @Html.DisplayFor(modelItem => item.GoblinNavigation.LastName)
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberNavigation.Value)
